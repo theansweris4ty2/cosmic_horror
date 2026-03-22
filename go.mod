@@ -1,4 +1,4 @@
-module web_game
+module github.com/theansweris4ty2/cosmic_horror
 
 go 1.26.1
 

@@ -2,9 +2,20 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
+
+type TilemapLayerJSON struct {
+	Data   []int `jason:"data"`
+	Width  int   `json:"width"`
+	Height int   `json:"height"`
+}
+
+type TilemapJSON struct {
+	Layers []TilemapLayerJSON `json:"layers"`
+}
 
 func loadPlayerImages() []*ebiten.Image {
 	playerImg1, _, err := ebitenutil.NewImageFromFile("Walk.png")

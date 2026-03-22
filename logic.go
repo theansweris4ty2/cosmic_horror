@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/hajimehoshi/ebiten/v2"
 	"image"
+
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 func (c *Camera) followTarget(t *Player) {
@@ -12,7 +13,7 @@ func (c *Camera) followTarget(t *Player) {
 
 func (g *Game) Update() error {
 	// g.camera.followTarget(g.player)
-	g.player.checkCollisions()
+	g.player.actions()
 
 	return nil
 }
@@ -48,7 +49,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
 	return 360, 270
 }
-func (p *Player) checkCollisions() {
+func (p *Player) actions() {
 	p.veloX = 0
 	p.veloY = 0
 
