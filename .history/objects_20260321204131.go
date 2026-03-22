@@ -1,0 +1,21 @@
+package main
+
+import ()
+
+type Player struct {
+	playerImages   []*ebiten.Image
+	x, y           float64
+	veloX, veloY   float64
+	animationFrame int
+	action         string
+	forward        bool
+}
+
+type Camera struct {
+	x, y float64
+}
+
+type Game struct {
+	player *Player
+	camera *Camera
+}
