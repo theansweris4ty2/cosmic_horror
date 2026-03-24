@@ -1,0 +1,9 @@
+.PHONY
+
+build:
+	go build .
+
+.PHONY
+
+web_build:
+	GOOS=js GOARCH=wasm go build -o game.wasm main.go

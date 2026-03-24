@@ -9,7 +9,7 @@ type Player struct {
 	x, y           float64
 	veloX, veloY   float64
 	animationFrame int
-	action         string
+	action         int
 	forward        bool
 }
 
@@ -20,4 +20,5 @@ type Camera struct {
 type Game struct {
 	player *Player
 	camera *Camera
+	timer  int
 }

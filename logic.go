@@ -6,20 +6,19 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
-func (c *Camera) followTarget(t *Player) {
-	c.x = -t.x + float64(screenWidth/10)
-	c.y = -t.y + float64(screenHeight/10)
-}
+// func (c *Camera) followTarget(t *Player) {
+// 	c.x = -t.x + float64(screenWidth/10)
+// 	c.y = -t.y + float64(screenHeight/10)
+// }
 
 func (g *Game) Update() error {
+	g.timer += 1
 	// g.camera.followTarget(g.player)
-	g.player.actions()
+	g.player.movement(g)
 
 	return nil
 }
 func (g *Game) Draw(screen *ebiten.Image) {
-
-	frame := 0
 	opts := &ebiten.DrawImageOptions{}
 	// opts.GeoM.Translate(g.camera.x, g.camera.y)
 	// opts.GeoM.Reset()
@@ -27,21 +26,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	srcY := 0
 
 	opts.GeoM.Translate(g.player.x, g.player.y)
-	switch g.player.action {
-	case "walk":
-		frame = 0
-	case "walk_left":
-		frame = 1
-	case "jump":
-		frame = 2
-	case "fight":
-		frame = 3
-	case "fight_left":
-		frame = 4
-	default:
-		frame = 0
-	}
-	screen.DrawImage(g.player.playerImages[frame].SubImage(image.Rect(srcX, srcY, srcX+128, srcY+128)).(*ebiten.Image), opts)
+
+	screen.DrawImage(g.player.playerImages[g.player.action].SubImage(image.Rect(srcX, srcY, srcX+128, srcY+128)).(*ebiten.Image), opts)
 	opts.GeoM.Reset()
 
 }
@@ -49,15 +35,18 @@ func (g *Game) Draw(screen *ebiten.Image) {
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
 	return 360, 270
 }
-func (p *Player) actions() {
+func (p *Player) movement(g *Game) {
 	p.veloX = 0
 	p.veloY = 0
 
 	if ebiten.IsKeyPressed(ebiten.KeyArrowRight) {
-		p.action = "walk"
+		p.action = 0
 		p.forward = true
 		if p.animationFrame < 8 {
-			p.animationFrame += 1
+			if g.timer%2 == 0 {
+				p.animationFrame += 1
+			}
+
 		} else {
 			p.animationFrame = 0
 		}
@@ -67,10 +56,13 @@ func (p *Player) actions() {
 		}
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyArrowLeft) {
-		p.action = "walk_left"
+		p.action = 1
 		p.forward = false
 		if p.animationFrame > 0 {
-			p.animationFrame -= 1
+			if g.timer%2 == 0 {
+				p.animationFrame -= 1
+			}
+
 		} else {
 			p.animationFrame = 8
 		}
@@ -81,9 +73,12 @@ func (p *Player) actions() {
 		}
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyArrowUp) {
-		p.action = "jump"
+		p.action = 2
 		if p.animationFrame < 8 {
-			p.animationFrame += 1
+			if g.timer%2 == 0 {
+				p.animationFrame += 1
+			}
+
 		} else {
 			p.animationFrame = 0
 		}
@@ -95,18 +90,27 @@ func (p *Player) actions() {
 
 	if ebiten.IsKeyPressed(ebiten.KeySpace) {
 		if p.forward {
-			p.action = "fight"
+			p.action = 3
+			if p.animationFrame < 5 {
+				if g.timer%2 == 0 {
+					p.animationFrame += 1
+				}
+			} else {
+				p.animationFrame = 0
+			}
 		} else {
-			p.action = "fight_left"
+			p.action = 4
+			if p.animationFrame > 0 {
+				if g.timer%2 == 0 {
+					p.animationFrame -= 1
+				}
+			} else {
+				p.animationFrame = 5
+			}
 		}
-		if p.animationFrame < 5 {
-			p.animationFrame += 1
-		} else {
-			p.animationFrame = 0
-		}
+
 	}
 
 	p.x += p.veloX
 	p.y += p.veloY
-
 }

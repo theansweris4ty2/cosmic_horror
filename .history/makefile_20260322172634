@@ -1,0 +1,16 @@
+BINARY_NAME=cosmic_horror.exe
+TEST_NAME = test.exe
+WEB_BINARY=cosmic_horror.wasm
+
+build:
+	go build -o ${BINARY_NAME} main.go 
+
+web:
+	GOOS=js GOARCH=wasm go build -o ${WEB_BINARY} main.go 
+
+clean:
+	go build -o ${TEST_NAME} -ldflags="-w -s" 
+	
+
+run:
+	go run .

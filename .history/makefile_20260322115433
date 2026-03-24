@@ -1,0 +1,7 @@
+.PHONY
+build:
+	go build .
+
+.PHONY
+web_build:
+	GOOS=js GOARCH=wasm

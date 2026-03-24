@@ -1,0 +1,6 @@
+
+build:
+	go build -o cosmic_horror main.go
+
+build_web:
+	GOOS = 'js' GOARCH = 'wasm' go build -o game.wasm .

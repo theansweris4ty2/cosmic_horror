@@ -1,0 +1,8 @@
+BINARY_NAME=cosmic_horror.exe
+WEB_BINARY=cosmic_horror.wasm
+
+build:
+	go build -o ${BINARY_NAME} main.go 
+
+web:
+	go build -o ${WEB_BINARY} main.go 
