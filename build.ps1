@@ -12,6 +12,10 @@ function build {
     go build -o cosmic_horror.exe -ldflags="-w -s" .
 }
 
+function wasmserve {
+    go run github.com/hajimehoshi/wasmserve@latest .
+}
+
 
 
 

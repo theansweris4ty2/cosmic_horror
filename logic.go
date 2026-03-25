@@ -13,8 +13,23 @@ import (
 
 func (g *Game) Update() error {
 	g.timer += 1
-	// g.camera.followTarget(g.player)
+	var gravity float64
 	g.player.movement(g)
+	if g.player.y+128 < 228 {
+		gravity = 2
+
+		if g.player.forward == true {
+			g.player.action = 2
+		} else {
+			g.player.action = 6
+		}
+
+	} else {
+		gravity = 0
+	}
+	g.player.veloY = gravity
+	g.player.x += g.player.veloX
+	g.player.y += g.player.veloY
 
 	return nil
 }
@@ -43,7 +58,7 @@ func (p *Player) movement(g *Game) {
 		p.action = 0
 		p.forward = true
 		if p.animationFrame < 8 {
-			if g.timer%2 == 0 {
+			if g.timer%3 == 0 {
 				p.animationFrame += 1
 			}
 
@@ -59,7 +74,7 @@ func (p *Player) movement(g *Game) {
 		p.action = 1
 		p.forward = false
 		if p.animationFrame > 0 {
-			if g.timer%2 == 0 {
+			if g.timer%3 == 0 {
 				p.animationFrame -= 1
 			}
 
@@ -72,27 +87,26 @@ func (p *Player) movement(g *Game) {
 			p.veloX *= -1
 		}
 	}
-	if ebiten.IsKeyPressed(ebiten.KeyArrowUp) {
-		p.action = 2
-		if p.animationFrame < 8 {
-			if g.timer%2 == 0 {
-				p.animationFrame += 1
-			}
-
-		} else {
+	if ebiten.IsKeyPressed(ebiten.KeyArrowUp) && p.y+128 >= 228 {
+		if p.forward == true {
+			p.action = 2
 			p.animationFrame = 0
+			p.animationFrame += 1
+		} else {
+			p.action = 6
+			p.animationFrame = 8
+			p.animationFrame -= 1
 		}
-		p.veloY -= 1
-		if p.y <= 0 {
-			p.veloY *= -1
-		}
+
+		p.y += -50
+
 	}
 
 	if ebiten.IsKeyPressed(ebiten.KeySpace) {
 		if p.forward {
 			p.action = 3
 			if p.animationFrame < 5 {
-				if g.timer%2 == 0 {
+				if g.timer%3 == 0 {
 					p.animationFrame += 1
 				}
 			} else {
@@ -101,7 +115,7 @@ func (p *Player) movement(g *Game) {
 		} else {
 			p.action = 4
 			if p.animationFrame > 0 {
-				if g.timer%2 == 0 {
+				if g.timer%3 == 0 {
 					p.animationFrame -= 1
 				}
 			} else {
@@ -111,6 +125,4 @@ func (p *Player) movement(g *Game) {
 
 	}
 
-	p.x += p.veloX
-	p.y += p.veloY
 }

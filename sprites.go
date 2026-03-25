@@ -42,5 +42,9 @@ func loadPlayerImages() []*ebiten.Image {
 	if err != nil {
 		fmt.Println(err)
 	}
-	return []*ebiten.Image{playerImg1, playerImg2, playerImg3, playerImg4, playerImg5, playerImg6}
+	playerImg7, _, err := ebitenutil.NewImageFromFile("Jump_left.png")
+	if err != nil {
+		fmt.Println(err)
+	}
+	return []*ebiten.Image{playerImg1, playerImg2, playerImg3, playerImg4, playerImg5, playerImg6, playerImg7}
 }
