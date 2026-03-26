@@ -31,7 +31,7 @@ func (g *Game) Update() error {
 	g.player.x += g.player.veloX
 	g.player.y += g.player.veloY
 	g.camera.x = -g.player.x + 50
-	g.camera.y = g.player.y - 100
+	g.camera.y = g.player.y + 100
 
 	return nil
 }
@@ -98,7 +98,7 @@ func (p *Player) movement(g *Game) {
 			p.animationFrame -= 1
 		}
 
-		p.y += -40
+		p.y += -60
 
 	}
 

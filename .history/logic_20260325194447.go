@@ -7,8 +7,8 @@ import (
 )
 
 func (c *Camera) followTarget(t *Player) {
-	c.x = -t.x + 50
-	c.y = -t.y + 50
+	c.x = t.x + float64(10)
+	c.y = t.y + float64(10)
 }
 
 func (g *Game) Update() error {
@@ -30,17 +30,18 @@ func (g *Game) Update() error {
 	g.player.veloY = gravity
 	g.player.x += g.player.veloX
 	g.player.y += g.player.veloY
-	g.camera.x = -g.player.x + 50
-	g.camera.y = g.player.y - 100
 
 	return nil
 }
 func (g *Game) Draw(screen *ebiten.Image) {
 	opts := &ebiten.DrawImageOptions{}
+	g.camera.followTarget(g.player)
+	// opts.GeoM.Translate(g.camera.x, g.camera.y)
+	// opts.GeoM.Reset()
 	srcX := g.player.animationFrame % 10 * 128
 	srcY := 0
 
-	opts.GeoM.Translate(g.player.x, g.player.y)
+	// opts.GeoM.Translate(g.player.x, g.player.y)
 	opts.GeoM.Translate(g.camera.x, g.camera.y)
 	screen.DrawImage(g.player.playerImages[g.player.action].SubImage(image.Rect(srcX, srcY, srcX+128, srcY+128)).(*ebiten.Image), opts)
 	opts.GeoM.Reset()
@@ -98,7 +99,7 @@ func (p *Player) movement(g *Game) {
 			p.animationFrame -= 1
 		}
 
-		p.y += -40
+		p.y += -50
 
 	}
 

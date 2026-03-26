@@ -98,7 +98,7 @@ func (p *Player) movement(g *Game) {
 			p.animationFrame -= 1
 		}
 
-		p.y += -40
+		p.y += -30
 
 	}
 
