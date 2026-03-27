@@ -8,17 +8,17 @@ import (
 )
 
 const (
-	screenWidth  = 960
-	screenHeight = 672
+	screenWidth  = 900
+	screenHeight = 630
 )
 
 func main() {
-	playerImages := loadPlayerImages()
-	p := new(Player{playerImages, 100, 100, 0, 0, 0, 5, true})
+	playerImages, background, middleground := loadPlayerImages()
+	p := new(Player{playerImages, 100, 115, 0, 0, 0, 5, true})
 	c := Camera{0, 0}
-	g := Game{p, &c, 0}
+	g := Game{p, &c, 0, background, middleground}
 	ebiten.SetWindowSize(screenWidth, screenHeight)
-	ebiten.SetWindowTitle("Hello World")
+	ebiten.SetWindowTitle("Cosmic Horror")
 	if err := ebiten.RunGame(&g); err != nil {
 		fmt.Println(err)
 	}

@@ -18,7 +18,9 @@ type Camera struct {
 }
 
 type Game struct {
-	player *Player
-	camera *Camera
-	timer  int
+	player       *Player
+	camera       *Camera
+	timer        int
+	background   *ebiten.Image
+	middleground *ebiten.Image
 }

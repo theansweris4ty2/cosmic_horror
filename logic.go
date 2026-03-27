@@ -6,16 +6,11 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
-func (c *Camera) followTarget(t *Player) {
-	c.x = -t.x + 50
-	c.y = -t.y + 50
-}
-
 func (g *Game) Update() error {
 	g.timer += 1
 	var gravity float64
 	g.player.movement(g)
-	if g.player.y+128 < 228 {
+	if g.player.y+128 < 240 {
 		gravity = 2
 
 		if g.player.forward == true {
@@ -30,7 +25,7 @@ func (g *Game) Update() error {
 	g.player.veloY = gravity
 	g.player.x += g.player.veloX
 	g.player.y += g.player.veloY
-	g.camera.x = -g.player.x + 50
+	g.camera.x = -g.player.x + 100
 	g.camera.y = g.player.y - 100
 
 	return nil
@@ -40,8 +35,16 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	srcX := g.player.animationFrame % 10 * 128
 	srcY := 0
 
-	opts.GeoM.Translate(g.player.x, g.player.y)
+	for i := -1; i < 5; i++ {
+		opts.GeoM.Translate((g.camera.x)+float64(i*384), 0)
+		// opts.GeoM.Translate(g.camera.x, g.camera.y)
+		screen.DrawImage(g.background, opts)
+		screen.DrawImage(g.middleground, opts)
+		opts.GeoM.Reset()
+	}
+
 	opts.GeoM.Translate(g.camera.x, g.camera.y)
+	opts.GeoM.Translate(g.player.x, g.player.y)
 	screen.DrawImage(g.player.playerImages[g.player.action].SubImage(image.Rect(srcX, srcY, srcX+128, srcY+128)).(*ebiten.Image), opts)
 	opts.GeoM.Reset()
 
@@ -66,7 +69,7 @@ func (p *Player) movement(g *Game) {
 			p.animationFrame = 0
 		}
 		p.veloX += 1
-		if p.x+16 >= 360 {
+		if p.x+16 >= 900 {
 			p.veloX *= -1
 		}
 	}
