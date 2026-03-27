@@ -47,6 +47,16 @@ func loadPlayerImages() ([]*ebiten.Image, *ebiten.Image, *ebiten.Image) {
 		fmt.Println(err)
 
 	}
+	playerImg8, _, err := ebitenutil.NewImageFromFile("run.png")
+	if err != nil {
+		fmt.Println(err)
+
+	}
+	playerImg9, _, err := ebitenutil.NewImageFromFile("run_left.png")
+	if err != nil {
+		fmt.Println(err)
+
+	}
 	background, _, err := ebitenutil.NewImageFromFile("background.png")
 	if err != nil {
 		fmt.Println(err)
@@ -55,5 +65,5 @@ func loadPlayerImages() ([]*ebiten.Image, *ebiten.Image, *ebiten.Image) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	return []*ebiten.Image{playerImg1, playerImg2, playerImg3, playerImg4, playerImg5, playerImg6, playerImg7}, background, middleground
+	return []*ebiten.Image{playerImg1, playerImg2, playerImg3, playerImg4, playerImg5, playerImg6, playerImg7, playerImg8, playerImg9}, background, middleground
 }

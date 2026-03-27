@@ -24,3 +24,5 @@ type Game struct {
 	background   *ebiten.Image
 	middleground *ebiten.Image
 }
+
+// TODO Add levels field to game which is a make[]levels

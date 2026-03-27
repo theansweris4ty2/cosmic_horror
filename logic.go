@@ -4,13 +4,16 @@ import (
 	"image"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	// "github.com/hajimehoshi/ebiten/v2/inpututil"
 )
+
+// TODO Create function to play sounds and add sound files
 
 func (g *Game) Update() error {
 	g.timer += 1
 	var gravity float64
 	g.player.movement(g)
-	if g.player.y+128 < 240 {
+	if g.player.y+128 <= 240 {
 		gravity = 2
 
 		if g.player.forward == true {
@@ -73,6 +76,22 @@ func (p *Player) movement(g *Game) {
 			p.veloX *= -1
 		}
 	}
+	if ebiten.IsKeyPressed(ebiten.KeyArrowRight) && ebiten.IsKeyPressed(ebiten.KeyR) {
+		p.action = 7
+		p.forward = true
+		if p.animationFrame < 8 {
+			if g.timer%3 == 0 {
+				p.animationFrame += 1
+			}
+
+		} else {
+			p.animationFrame = 0
+		}
+		p.veloX += 3
+		if p.x+16 >= 900 {
+			p.veloX *= -3
+		}
+	}
 	if ebiten.IsKeyPressed(ebiten.KeyArrowLeft) {
 		p.action = 1
 		p.forward = false
@@ -90,7 +109,24 @@ func (p *Player) movement(g *Game) {
 			p.veloX *= -1
 		}
 	}
-	if ebiten.IsKeyPressed(ebiten.KeyArrowUp) && p.y+128 >= 228 {
+	if ebiten.IsKeyPressed(ebiten.KeyArrowLeft) && ebiten.IsKeyPressed(ebiten.KeyR) {
+		p.action = 8
+		p.forward = false
+		if p.animationFrame > 0 {
+			if g.timer%3 == 0 {
+				p.animationFrame -= 1
+			}
+
+		} else {
+			p.animationFrame = 8
+		}
+
+		p.veloX -= 3
+		if p.x <= 0 {
+			p.veloX *= -3
+		}
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyArrowUp) && p.y+128 >= 240 {
 		if p.forward == true {
 			p.action = 2
 			p.animationFrame = 0
