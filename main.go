@@ -14,9 +14,10 @@ const (
 
 func main() {
 	playerImages, background, middleground := loadPlayerImages()
+	offScreenImage := ebiten.NewImage(screenWidth, screenHeight)
 	p := new(Player{playerImages, 100, 115, 0, 0, 0, 5, true})
 	c := Camera{0, 0}
-	g := Game{p, &c, 0, background, middleground}
+	g := Game{p, &c, 0, background, middleground, offScreenImage}
 	ebiten.SetWindowSize(screenWidth, screenHeight)
 	ebiten.SetWindowTitle("Cosmic Horror")
 	if err := ebiten.RunGame(&g); err != nil {

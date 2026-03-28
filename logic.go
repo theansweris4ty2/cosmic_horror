@@ -1,9 +1,9 @@
 package main
 
 import (
-	"image"
-
+	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
+	"image"
 	// "github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
@@ -12,7 +12,7 @@ import (
 func (g *Game) Update() error {
 	g.timer += 1
 	var gravity float64
-	g.player.movement(g)
+	g.player.Movement(g)
 	if g.player.y+128 <= 240 {
 		gravity = 2
 
@@ -39,24 +39,25 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	srcY := 0
 
 	for i := -1; i < 5; i++ {
+		g.background.DrawImage(g.middleground, opts)
 		opts.GeoM.Translate((g.camera.x)+float64(i*384), 0)
-		// opts.GeoM.Translate(g.camera.x, g.camera.y)
-		screen.DrawImage(g.background, opts)
-		screen.DrawImage(g.middleground, opts)
+		g.offScreenImage.DrawImage(g.background, opts)
 		opts.GeoM.Reset()
 	}
 
 	opts.GeoM.Translate(g.camera.x, g.camera.y)
 	opts.GeoM.Translate(g.player.x, g.player.y)
-	screen.DrawImage(g.player.playerImages[g.player.action].SubImage(image.Rect(srcX, srcY, srcX+128, srcY+128)).(*ebiten.Image), opts)
+	g.offScreenImage.DrawImage(g.player.playerImages[g.player.action].SubImage(image.Rect(srcX, srcY, srcX+128, srcY+128)).(*ebiten.Image), opts)
 	opts.GeoM.Reset()
+	screen.DrawImage(g.offScreenImage, opts)
 
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
 	return 360, 270
 }
-func (p *Player) movement(g *Game) {
+
+func (p *Player) Movement(g *Game) {
 	p.veloX = 0
 	p.veloY = 0
 
@@ -80,7 +81,7 @@ func (p *Player) movement(g *Game) {
 		p.action = 7
 		p.forward = true
 		if p.animationFrame < 8 {
-			if g.timer%3 == 0 {
+			if g.timer%12 == 0 {
 				p.animationFrame += 1
 			}
 
@@ -113,7 +114,7 @@ func (p *Player) movement(g *Game) {
 		p.action = 8
 		p.forward = false
 		if p.animationFrame > 0 {
-			if g.timer%3 == 0 {
+			if g.timer%12 == 0 {
 				p.animationFrame -= 1
 			}
 
@@ -164,4 +165,11 @@ func (p *Player) movement(g *Game) {
 
 	}
 
+}
+func (m *Monster) Movement(g *Game) {
+	m.x += m.veloX
+}
+
+func Speak(e Entity) {
+	fmt.Println("I am speaking")
 }
